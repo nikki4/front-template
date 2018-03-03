@@ -1,0 +1,53 @@
+.transition() {
+	transition: all .2s ease-out;
+}
+.font(@font-size) {
+	font-size: (@font-size / @fs * 1rem);
+}
+.font(@font-size, @line-height) {
+	font-size: (@font-size / @fs * 1rem);
+	line-height: (@line-height / @fs * 1rem);
+}
+.font-face(@fontFamily, @font-path, @fileName, @svgLabel, @fontWeight: normal, @fontStyle: normal) {
+	@font-face {
+		font-family: @fontFamily;
+		src: url("@{font-path}@{fileName}.eot");
+		src: url("@{font-path}@{fileName}.eot?#iefix") format("embedded-opentype"),
+			 url("@{font-path}@{fileName}.woff") format("woff"),
+			 url("@{font-path}@{fileName}.woff2") format("woff2"),
+			 url("@{font-path}@{fileName}.ttf") format("truetype"),
+			 url("@{font-path}@{fileName}.svg#@{svgLabel}") format("svg");
+		font-weight: @fontWeight;
+		font-style: @fontStyle;
+	}
+}
+.icon-svg(@icon-name) {
+	@icon-path: "../images/svg/";
+	background: data-uri("@{icon-path}@{icon-name}") 0 0 no-repeat;
+	width: image-width("@{icon-path}@{icon-name}");
+	height: image-height("@{icon-path}@{icon-name}");
+	display: inline-block;
+}
+.clearfix() {
+	&:before, &:after {
+		content: " ";
+		display: table;
+	}
+	&:after {
+		clear: both;
+	}
+}
+.size(@width, @height) {
+	width: @width;
+	height: @height;
+}
+.size(@width) {
+	width: @width;
+	height: @width;
+}
+.calc(@param, @val){
+	@{param}: calc(~"@{val}");
+	@{param}: -moz-calc(~"@{val}");
+	@{param}: -webkit-calc(~"@{val}");
+	@{param}: -o-calc(~"@{val}");
+}

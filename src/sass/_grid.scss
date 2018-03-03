@@ -1,0 +1,31 @@
+/*grid*/
+
+[class^="col-"] {
+	min-height: 1px;
+	float: left;
+}
+
+$grid-columns: 26;
+@for $i from 1 through $grid-columns {
+	.col-#{$i} { 
+		width: 100% / $grid-columns * $i;
+	}
+}
+
+@media all and (max-width: 960px) {
+	$grid-columns: 22;
+	@for $i from 1 through $grid-columns {
+		.col-md-#{$i} { 
+			width: 100% / $grid-columns * $i;
+		}
+	}
+}
+
+@media all and (max-width: 810px) {
+	$grid-columns: 14;
+	@for $i from 1 through $grid-columns {
+		.col-md-#{$i} { 
+			width: 100% / $grid-columns * $i;
+		}
+	}
+}

@@ -1,0 +1,42 @@
+/*---------------------------------
+			grid
+---------------------------------*/
+
+[class^="col-"] {
+	min-height: 1px;
+	float: left;
+}
+
+@column-name: col;
+@column-count: 26;
+.generate-column(@i: 1) when (@i =< @column-count) {
+	.@{column-name}-@{i} {
+		width: @i * (100% / @column-count);
+	}
+	.generate-column(@i + 1);
+}
+.generate-column();
+
+@media all and (max-width: 960px) {
+	@column-name-md: col-md;
+	@column-count-md: 22;
+	.generate-column-md(@i: 1) when (@i =< @column-count-md) {
+		.@{column-name-md}-@{i} {
+			width: @i * (100% / @column-count-md);
+		}
+		.generate-column-md(@i + 1);
+	}
+	.generate-column-md();
+}
+
+@media all and (max-width: 810px) {
+	@column-name-xs: col-xs;
+	@column-count-xs: 14;
+	.generate-column-xs(@i: 1) when (@i =< @column-count-xs) {
+		.@{column-name-xs}-@{i} {
+			width: @i * (100% / @column-count-xs);
+		}
+		.generate-column-xs(@i + 1);
+	}
+	.generate-column-xs();
+}

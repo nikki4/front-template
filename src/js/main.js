@@ -1,40 +1,36 @@
 var InterfaceScript = function () {
 
-	this.addActive = function(e) {
-		e.preventDefault();
-		return $(this)
-			.addClass("active");
-	}
+	self = this;
 
-	this.addSiblingsActive = function(e) {
-		e.preventDefault();
-		return $(this)
-			.siblings()
-				.removeClass("active")
-		.prevObject
-			.addClass("active");
-	}
+	self._states = {};
 
-	this.toggleActive = function(e) {
+	var _addActive = function(e) {
 		e.preventDefault();
-		return $(this)
-			.toggleClass("active");
-	}
+		return $(this).addClass("active");
+	};
 
-	this.toggleSiblingsActive = function(e) {
+	var _addSiblingsActive = function(e) {
 		e.preventDefault();
-		return $(this)
-			.siblings()
-				.removeClass("active")
-		.prevObject
-			.toggleClass("active");
-	}
+		return $(this).siblings().removeClass("active").prevObject.addClass("active");
+	};
 
-	this.toggleTabs = function(e) {
+	var _toggleActive = function(e) {
+		e.preventDefault();
+		return $(this).toggleClass("active");
+	};
+
+	var _toggleSiblingsActive = function(e) {
+		e.preventDefault();
+		return $(this).siblings().removeClass("active").prevObject.toggleClass("active");
+	};
+
+	var _toggleTabs = function(e) {
 		if ($(this).hasClass("active")) {
 			return false;
 		}
+
 		e.preventDefault();
+
 		return $(this)
 			.addClass("active")
 			.siblings()
@@ -49,72 +45,101 @@ var InterfaceScript = function () {
 				.show();
 	};
 
-	this.setInputValue = function() {
+	var _setInputValue = function() {
 		return $(this)[0].setAttribute("value", this.value);
-	}
+	};
 
-}
+	var _setModal = function () {
+		var open_modal = $(".js-modal-open");
+		var close = $(".js-modal-close");
+		var close_wrap = $(".overlay");
 
-function setModal() {
-	var open_modal = $(".js-modal-open");
-	var close = $('.js-modal-close');
-	var close_wrap = $('.overlay');
+		open_modal.on("click", function (event) {
+			event.preventDefault();
+			
+			var div = $(this).attr("data-href");
+			var divM = $(div).find(".g-modal");
 
-	open_modal.on("click", function (event) {
-		event.preventDefault();
-		
-		var div = $(this).attr('data-href');
-		var divM = $(div).find('.g-modal');
+			$("body").css("overflow-y", "hidden");
 
-		$('body').css("overflow-y", "hidden");
-		$(div).fadeIn(200,
-			function () {
-				divM.animate({opacity: 1, top: '5%'}, 300);
-			}
-		);
-	});
+			$(div).fadeIn(200, function () {
+				divM.animate({opacity: 1, top: "5%"}, 300);
+			});
+		});
 
-	close.on("click", function (event) {
-		event.preventDefault();
-		var div = $(this).closest('.g-modal');
-		var overlay = $(div).closest('.overlay');
-		
-		div.animate({opacity: 0, top: '0'}, 300,
-			function () {
+		close.on("click", function (event) {
+			event.preventDefault();
+			var div = $(this).closest(".g-modal");
+			var overlay = $(div).closest(".overlay");
+			
+			div.animate({
+				opacity: 0,
+				top: "0"
+			}, 300, function () {
 				overlay.fadeOut(200);
-				$('body').css("overflow-y", "auto");
-			}
-		);
+				$("body").css("overflow-y", "auto");
+			});
+		});
 		
-	});
-	
-	close_wrap.on("click", function (event) {
-		if (!event.target) {
-		  event.target = event.srcElement
+		close_wrap.on("click", function (event) {
+			if (!event.target) {
+				event.target = event.srcElement
+			}
+
+			if ($(event.target).closest(".g-modal").length) {
+				return false;
+			} 
+
+			event.preventDefault();
+
+			var div = $(this).find(".g-modal");
+			var overlay = $(this);
+			
+			div.animate({
+				opacity: 0,
+				top: "0"
+			}, 300, function () {
+				overlay.fadeOut(200);
+				$("body").css("overflow-y", "auto");
+			});
+		});
+	};
+
+	var _detectPlatform = function () {
+		var platform = "";
+
+		if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+			platform = "mobile";
+		} else {
+			platform = "desktop";
 		}
-		if ($(event.target).closest(".g-modal").length){
-			return false;
-		} 
-		event.preventDefault();
-		var div = $(this).find('.g-modal');
-		var overlay = $(this);
-		
-		div.animate({opacity: 0, top: '0'}, 300,
-			function () {
-				overlay.fadeOut(200);
-				$('body').css("overflow-y", "auto");
-			}
-		);
-	});
-}
+
+		document.cookie = "platform=" + platform;
+		sessionStorage.setItem("platform", platform);
+		self._states.platform = platform;
+	};
+
+	var _detectPlatformEvent = function () {
+		self._states.eventListener = (self._states.platform === "desktop" ? "click" : "touchend");
+	};
+
+	var _setEvents = function () {
+		$(".js-add-active").on(self._states.eventListener, _addActive);
+		$(".js-add-siblings-active").on(self._states.eventListener, _addSiblingsActive);
+		$(".js-toggle-active").on(self._states.eventListener, _toggleActive);
+		$(".js-toggle-siblings-active").on(self._states.eventListener, _toggleSiblingsActive);
+		$(".js-tabs").on(self._states.eventListener, _toggleTabs);
+		$(".js-input").on(self._states.eventListener, _setInputValue);
+	};
+
+	this.init = function () {
+		_detectPlatform();
+		_detectPlatformEvent();
+		_setModal();
+		_setEvents();
+	};
+};
 
 var interfaceScript = new InterfaceScript();
 
-$(document)
-	.on("click", ".js-add-active", interfaceScript.addActive)
-	.on("click", ".js-add-siblings-active", interfaceScript.addSiblingsActive)
-	.on("click", ".js-toggle-active", interfaceScript.toggleActive)
-	.on("click", ".js-toggle-siblings-active", interfaceScript.toggleSiblingsActive)
-	.on("click", ".js-tabs", interfaceScript.toggleTabs)
-	.on("input", ".js-input", interfaceScript.setInputValue)
-	.ready(setModal());
+$(document).ready(interfaceScript.init.bind(interfaceScript));

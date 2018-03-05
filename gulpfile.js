@@ -22,16 +22,16 @@ var path = {
     src: {
         html: 'src/*.html',
         js: 'src/js/**/*.js',
-        // style: 'src/less/style.less',
-        style: 'src/sass/style.sass',
+        style: 'src/less/style.less',
+        // style: 'src/sass/style.sass',
         img: 'src/images/**/*.*',
         fonts: 'src/fonts/**/*.*'
     },
     watch: {
         html: 'src/**/*.html',
         js: 'src/js/**/*.js',
-        // style: 'src/less/**/*.less',
-        style: 'src/sass/**/*.*',
+        style: 'src/less/**/*.less',
+        // style: 'src/sass/**/*.*',
         img: 'src/images/**/*.*',
         fonts: 'src/fonts/**/*.*'
     },
@@ -74,16 +74,16 @@ gulp.task('js:build', function () {
 gulp.task('style:build', function () {
     gulp.src(path.src.style) 
         .pipe(sourcemaps.init())
-        // .pipe(less({
-        //     includePaths: ['src/less/'],
-        //     sourceMap: true,
-        //     errLogToConsole: true
-        // }))
-        .pipe(sass({
-            includePaths: ['src/sass/'],
+        .pipe(less({
+            includePaths: ['src/less/'],
             sourceMap: true,
             errLogToConsole: true
         }))
+        // .pipe(sass({
+        //     includePaths: ['src/sass/'],
+        //     sourceMap: true,
+        //     errLogToConsole: true
+        // }))
         .pipe(prefixer(['last 15 versions'], { cascade: true }))
         .pipe(sourcemaps.write())
         .pipe(gulp.dest(path.build.css))

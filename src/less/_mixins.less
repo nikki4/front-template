@@ -8,7 +8,7 @@
 	font-size: (@font-size / @fs * 1rem);
 	line-height: (@line-height / @fs * 1rem);
 }
-.font-face(@fontFamily, @font-path, @fileName, @svgLabel, @fontWeight: normal, @fontStyle: normal) {
+.font-face(@fontFamily, @font-path, @fileName, @svgLabel, @fontWeight, @fontStyle: normal) {
 	@font-face {
 		font-family: @fontFamily;
 		src: url("@{font-path}@{fileName}.eot");

@@ -1,6 +1,6 @@
 /*grid*/
 
-[class^="col-"] {
+[class*="col-"] {
 	min-height: 1px;
 	float: left;
 }

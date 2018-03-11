@@ -4,11 +4,10 @@ var gulp = require('gulp'),
     watch = require('gulp-watch'),
     prefixer = require('gulp-autoprefixer'),
     less = require('gulp-less'),
-    sass = require('gulp-sass'),
+    // sass = require('gulp-sass'),
     sourcemaps = require('gulp-sourcemaps'),
     rigger = require('gulp-rigger'),
     browserSync = require("browser-sync"),
-    rimraf = require('rimraf'),
     reload = browserSync.reload;
 
 var path = {
@@ -35,24 +34,19 @@ var path = {
         img: 'src/images/**/*.*',
         fonts: 'src/fonts/**/*.*'
     },
-    clean: './build'
 };
 
 var config = {
     server: {
         baseDir: "./build"
     },
-    tunnel: true,
+    // tunnel: true,
     host: 'localhost',
-    port: 9000,
+    port: 3000,
 };
 
 gulp.task('webserver', function () {
     browserSync(config);
-});
-
-gulp.task('clean', function (cb) {
-    rimraf(path.clean, cb);
 });
 
 gulp.task('html:build', function () {

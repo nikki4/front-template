@@ -49,62 +49,6 @@ var InterfaceScript = function () {
 		return $(this)[0].setAttribute("value", this.value);
 	};
 
-	var _setModal = function () {
-		var open_modal = $(".js-modal-open");
-		var close = $(".js-modal-close");
-		var close_wrap = $(".overlay");
-
-		open_modal.on("click", function (event) {
-			event.preventDefault();
-			
-			var div = $(this).attr("data-href");
-			var divM = $(div).find(".g-modal");
-
-			$("body").css("overflow-y", "hidden");
-
-			$(div).fadeIn(200, function () {
-				divM.animate({opacity: 1, top: "5%"}, 300);
-			});
-		});
-
-		close.on("click", function (event) {
-			event.preventDefault();
-			var div = $(this).closest(".g-modal");
-			var overlay = $(div).closest(".overlay");
-			
-			div.animate({
-				opacity: 0,
-				top: "0"
-			}, 300, function () {
-				overlay.fadeOut(200);
-				$("body").css("overflow-y", "auto");
-			});
-		});
-		
-		close_wrap.on("click", function (event) {
-			if (!event.target) {
-				event.target = event.srcElement
-			}
-
-			if ($(event.target).closest(".g-modal").length) {
-				return false;
-			} 
-
-			event.preventDefault();
-
-			var div = $(this).find(".g-modal");
-			var overlay = $(this);
-			
-			div.animate({
-				opacity: 0,
-				top: "0"
-			}, 300, function () {
-				overlay.fadeOut(200);
-				$("body").css("overflow-y", "auto");
-			});
-		});
-	};
-
 	var _detectPlatform = function () {
 		var platform = "";
 
@@ -135,7 +79,6 @@ var InterfaceScript = function () {
 	this.init = function () {
 		_detectPlatform();
 		_detectPlatformEvent();
-		_setModal();
 		_setEvents();
 	};
 };
